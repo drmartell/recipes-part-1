@@ -9,13 +9,9 @@ const Recipe = require('../lib/models/Recipe');
 describe('app routes', () => {
   beforeAll(() => connect());
 
-  beforeEach(() => {
-    return mongoose.connection.dropDatabase();
-  });
+  beforeEach(() => mongoose.connection.dropDatabase());
 
-  afterAll(() => {
-    return mongoose.connection.close();
-  });
+  afterAll(() => mongoose.connection.close());
 
   it('creates a recipe', () => {
     return request(app)
@@ -63,6 +59,34 @@ describe('app routes', () => {
       });
   });
 
+  it('gets a recipe by id', async() => {
+    const recipe = await Recipe.create({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+    });
+
+    return request(app)
+      .get(`/api/v1/recipes/${recipe._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: recipe._id.toString(),
+          name: 'cookies',
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ],
+          __v: 0
+        });
+      });
+  });
+
   it('updates a recipe by id', async() => {
     const recipe = await Recipe.create({
       name: 'cookies',
@@ -81,6 +105,34 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'good cookies',
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ],
+          __v: 0
+        });
+      });
+  });
+
+  it('deletes a recipe by id', async() => {
+    const recipe = await Recipe.create({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+    });
+
+    return request(app)
+      .delete(`/api/v1/recipes/${recipe._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: recipe._id.toString(),
+          name: 'cookies',
           directions: [
             'preheat oven to 375',
             'mix ingredients',
