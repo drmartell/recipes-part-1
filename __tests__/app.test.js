@@ -18,6 +18,7 @@ describe('app routes', () => {
       .post('/api/v1/recipes')
       .send({
         name: 'cookies',
+        ingredients: [{ _id: expect.any(String), name: 'flour', amount: '1', measurement: 'tablespoon' }],
         directions: [
           'preheat oven to 375',
           'mix ingredients',
@@ -29,6 +30,7 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'cookies',
+          ingredients: [{ name: 'flour', amount: '1', measurement: 'tablespoon' }],
           directions: [
             'preheat oven to 375',
             'mix ingredients',
@@ -42,9 +44,9 @@ describe('app routes', () => {
 
   it('gets all recipes', async() => {
     const recipes = await Recipe.create([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
+      { name: 'cookies', ingredients: [], directions: [] },
+      { name: 'cake', ingredients: [], directions: [] },
+      { name: 'pie', ingredients: [], directions: [] }
     ]);
 
     return request(app)
@@ -54,6 +56,7 @@ describe('app routes', () => {
           expect(res.body).toContainEqual({
             _id: recipe._id.toString(),
             name: recipe.name
+            
           });
         });
       });
@@ -90,6 +93,7 @@ describe('app routes', () => {
   it('updates a recipe by id', async() => {
     const recipe = await Recipe.create({
       name: 'cookies',
+      ingredients: [],
       directions: [
         'preheat oven to 375',
         'mix ingredients',
@@ -105,6 +109,7 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'good cookies',
+          ingredients: [],
           directions: [
             'preheat oven to 375',
             'mix ingredients',
@@ -119,6 +124,7 @@ describe('app routes', () => {
   it('deletes a recipe by id', async() => {
     const recipe = await Recipe.create({
       name: 'cookies',
+      ingredients: [],
       directions: [
         'preheat oven to 375',
         'mix ingredients',
@@ -133,6 +139,7 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: recipe._id.toString(),
           name: 'cookies',
+          ingredients: [],
           directions: [
             'preheat oven to 375',
             'mix ingredients',
