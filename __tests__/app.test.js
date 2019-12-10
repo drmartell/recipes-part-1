@@ -48,17 +48,17 @@ describe('app routes', () => {
       { name: 'cake', ingredients: [], directions: [] },
       { name: 'pie', ingredients: [], directions: [] }
     ]);
-
+    
+    const recipesObj = {};
+    recipes.forEach(recipe =>
+      recipesObj[recipe._id.toString()] = { ...recipe.toJSON(), _id: recipe._id.toString() });
+    
     return request(app)
       .get('/api/v1/recipes')
       .then(res => {
-        recipes.forEach(recipe => {
-          expect(res.body).toContainEqual({
-            _id: recipe._id.toString(),
-            name: recipe.name
-            
-          });
-        });
+        const resObj = {};
+        res.body.forEach(recipe => resObj[recipe._id] = recipe);
+        expect(recipesObj).toEqual(resObj);
       });
   });
 
