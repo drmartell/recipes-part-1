@@ -18,7 +18,7 @@ describe('app routes', () => {
       .post('/api/v1/recipes')
       .send({
         name: 'cookies',
-        ingredients: [{ _id: expect.any(String), name: 'flour', amount: '1', measurement: 'tablespoon' }],
+        ingredients: [{ name: 'flour', amount: '1', measurement: 'tablespoon' }],
         directions: [
           'preheat oven to 375',
           'mix ingredients',
@@ -30,7 +30,7 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'cookies',
-          ingredients: [{ name: 'flour', amount: '1', measurement: 'tablespoon' }],
+          ingredients: [{ _id: expect.any(String), name: 'flour', amount: '1', measurement: 'tablespoon' }],
           directions: [
             'preheat oven to 375',
             'mix ingredients',
@@ -65,6 +65,7 @@ describe('app routes', () => {
   it('gets a recipe by id', async() => {
     const recipe = await Recipe.create({
       name: 'cookies',
+      ingredients: [{ name: 'flour', amount: '1', measurement: 'tablespoon' }],
       directions: [
         'preheat oven to 375',
         'mix ingredients',
@@ -79,6 +80,7 @@ describe('app routes', () => {
         expect(res.body).toEqual({
           _id: recipe._id.toString(),
           name: 'cookies',
+          ingredients: [{ _id: expect.any(String), name: 'flour', amount: '1', measurement: 'tablespoon' }],
           directions: [
             'preheat oven to 375',
             'mix ingredients',
