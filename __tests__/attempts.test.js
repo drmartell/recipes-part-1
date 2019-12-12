@@ -10,11 +10,10 @@ const Recipe = require('../lib/models/Recipe');
 describe('attempt routes', () => {
   beforeAll(() => connect());
 
-  beforeEach(() => mongoose.connection.dropDatabase());
-
   let recipe;
   let attempt;
   beforeEach(async() => {
+    await mongoose.connection.dropDatabase();
     recipe = await Recipe.create({ name: 'bread', ingredients: [], directions: [] });
     attempt = { recipeId: recipe._id, dateOfAttempt: Date.now(), notes: 'killer bread', rating: 5 };
   });
