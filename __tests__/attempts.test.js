@@ -24,14 +24,14 @@ describe('attempt routes', () => {
     .post('/api/v1/attempts')
     .send(attempt)
     .then(res => {
-      expect(res.body).toEqual({
+      expect(res.body).toEqual(expect.objectContaining({
         _id: expect.any(String),
         recipeId: recipe._id.toString(),
-        dateOfAttempt: expect.any(String),
         notes: 'killer bread',
         rating: 5,
         __v: 0
-      });
+      })
+      );
     }));
 
   it('gets all attempts', async() => {
@@ -46,7 +46,17 @@ describe('attempt routes', () => {
       .get('/api/v1/attempts')
       .then(res => {
         attempts.forEach(attempt => {
-          expect(res.body).toContainEqual(JSON.parse(JSON.stringify(attempt)));
+          expect(res.body).toContainEqual(JSON.parse(JSON.stringify({ 
+            _id: attempt._id.toString(),
+            recipeId: attempt.recipeId,
+            dateOfAttempt: attempt.dateOfAttempt,
+            day: attempt.day,
+            month: attempt.month,
+            year: attempt.year,
+            notes: attempt.notes,
+            rating: attempt.rating,
+            __v: 0
+          })));
         });
       });
   });
@@ -66,6 +76,9 @@ describe('attempt routes', () => {
           _id: expect.any(String),
           recipeId: recipe._id.toString(),
           dateOfAttempt: expect.any(String),
+          day: attempt.day,
+          month: attempt.month,
+          year: attempt.year,
           notes: 'It went well',
           rating: 4,
           __v: 0
@@ -89,6 +102,9 @@ describe('attempt routes', () => {
           _id: expect.any(String),
           recipeId: recipe._id.toString(),
           dateOfAttempt: expect.any(String),
+          day: attempt.day,
+          month: attempt.month,
+          year: attempt.year,
           notes: 'It went well',
           rating: 5,
           __v: 0
@@ -111,6 +127,9 @@ describe('attempt routes', () => {
           _id: expect.any(String),
           recipeId: recipe._id.toString(),
           dateOfAttempt: expect.any(String),
+          day: attempt.day,
+          month: attempt.month,
+          year: attempt.year,
           notes: 'It went well',
           rating: 4,
           __v: 0
