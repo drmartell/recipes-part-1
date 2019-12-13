@@ -87,6 +87,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          attempts: expect.any(Object),
           __v: 0
         });
       });
@@ -133,6 +134,7 @@ describe('app routes', () => {
         'put dough on cookie sheet',
         'bake for 10 minutes'
       ],
+      attempts: [],
     });
 
     return request(app)
@@ -148,6 +150,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          attempts: expect.any(Object),
           __v: 0
         });
       });
